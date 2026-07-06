@@ -1,0 +1,34 @@
+# Local character projects and archived datasets
+projects/*
+!projects/project-template.md
+archive/*
+!archive/.gitkeep
+
+# Generated images and references
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.gif
+*.psd
+*.clip
+
+# Training labels and dataset exports
+*.caption
+*.jsonl
+*.csv
+*.parquet
+
+# Model and training artifacts
+*.ckpt
+*.pt
+*.pth
+*.safetensors
+*.onnx
+*.bin
+
+# Local runtime files
+.DS_Store
+Thumbs.db
+__pycache__/
+*.pyc

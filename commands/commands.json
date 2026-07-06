@@ -1,0 +1,29 @@
+{
+  "commands": [
+    {
+      "name": "/lora-init",
+      "file": "lora-init.md",
+      "description": "初始化项目包，接收三视图并自动分析角色信息。"
+    },
+    {
+      "name": "/lora-prompts",
+      "file": "lora-prompts.md",
+      "description": "先询问训练集数量，再生成中文自然语言出图提示词清单。"
+    },
+    {
+      "name": "/lora-generate",
+      "file": "lora-generate.md",
+      "description": "先询问单次或批量与 n，再复核并调用 image_gen。"
+    },
+    {
+      "name": "/lora-label",
+      "file": "lora-label.md",
+      "description": "引导用户外部打标后，二次修正 captions 与 tags。"
+    },
+    {
+      "name": "/lora-archive",
+      "file": "lora-archive.md",
+      "description": "确认后把完整项目包迁到 archive。"
+    }
+  ]
+}
