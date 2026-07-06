@@ -52,22 +52,22 @@ archive/<项目名>/
 
 不要为新项目继续使用顶层 `input/`、`lists/`、`output/` 分散结构。
 
-## 命令入口
+## 调用入口
 
-项目内 `commands/commands.json` 是命令说明索引，不是 Codex App 的 slash 注册源。真正要在 Codex 输入框里触发，使用安装到 `~/.codex/prompts/` 的 wrapper，形式是 `/prompts:lora-init`、`/prompts:lora-prompts` 等。用户用自然语言表达同样意图时，也按对应命令流程处理。
+项目内 `commands/commands.json` 是命令说明索引，不是公开仓库必须依赖的注册机制。公开使用时优先通过 `@lora-base-image-prompts` 或自然语言意图触发；某些环境中的 `/prompts:lora-*` 只是一层本地 wrapper，不应视为 Skill 的唯一入口。
 
-| 命令 | 用途 | 默认动作 |
+| 调用方式 | 用途 | 默认动作 |
 |---|---|---|
-| `/prompts:lora-init <项目名>` | 初始化项目 | 创建或说明项目包，接收三视图，自动分析角色信息 |
-| `/prompts:lora-prompts` | 出提示词清单 | 先询问训练集数量，再写 `projects/<项目名>/prompts.md` |
-| `/prompts:lora-generate` | 调用 `image_gen` | 先询问单次或批量，批量必须问 `n`，复核同意后出图并保存到 `images/` |
-| `/prompts:lora-label` | 最终训练集洗标签 | 读取 `images/*.txt`，按最小变量原则清洗标签 |
-| `/prompts:lora-archive <项目名>` | 归档项目 | 确认后把 `projects/<项目名>/` 迁到 `archive/<项目名>/` |
+| `@lora-base-image-prompts 初始化项目 <项目名>` | 初始化项目 | 创建或说明项目包，接收三视图，自动分析角色信息 |
+| `@lora-base-image-prompts 生成提示词清单` | 出提示词清单 | 先询问训练集数量，再写 `projects/<项目名>/prompts.md` |
+| `@lora-base-image-prompts 开始出图` | 调用 `image_gen` | 先询问单次或批量，批量必须问 `n`，复核同意后出图并保存到 `images/` |
+| `@lora-base-image-prompts 清洗标签` | 最终训练集洗标签 | 读取 `images/*.txt`，按最小变量原则清洗标签 |
+| `@lora-base-image-prompts 归档项目 <项目名>` | 归档项目 | 确认后把 `projects/<项目名>/` 迁到 `archive/<项目名>/` |
 
 ## 标准流程
 
 1. **初始化项目**
-   - 用户说 `/prompts:lora-init <项目名>`、`/lora-init <项目名>`，或发送三视图并表达创建 LoRA 底图项目时，使用本 Skill。
+   - 用户说 `@lora-base-image-prompts 初始化项目 <项目名>`，或发送三视图并表达创建 LoRA 底图项目时，使用本 Skill。
    - 建立或说明 `projects/<项目名>/` 项目包。
    - 记录三视图位置到 `refs/`，需求记录到 `brief.md`。
    - 不要要求用户填表。先从用户消息、文件名、三视图内容和上下文自动推断角色名、触发词、画风、必须保留、禁忌元素。
@@ -83,7 +83,7 @@ archive/<项目名>/
    - 不要问训练超参数，除非用户主动提到底模或训练器。
 
 3. **生成提示词清单**
-   - 用户说 `/prompts:lora-prompts`、`/lora-prompts`，或要求“出提示词清单”时，先确认训练集最终数量。
+   - 用户说 `@lora-base-image-prompts 生成提示词清单`，或要求“出提示词清单”时，先确认训练集最终数量。
    - 写清单前，先列出将投喂给 `image_gen` 的原始参考图相对路径，路径必须位于 `projects/<项目名>/refs/`。
    - 严禁使用 `projects/<项目名>/images/` 内的生成图作为参考图。
    - 如果用户没给数量，读取 `references/proportion.md` 后提出 50 张默认计划，但仍必须询问用户是否按 50 张，还是指定其他数量。
@@ -106,7 +106,7 @@ archive/<项目名>/
 ```
 
 5. **调用 image_gen**
-   - 用户说 `/prompts:lora-generate`、`/lora-generate`，或要求开始出图时，先询问本次用单次还是批量。
+   - 用户说 `@lora-base-image-prompts 开始出图`，或要求开始出图时，先询问本次用单次还是批量。
    - 单次：本次只出 1 张。
    - 批量：必须询问本批出 `n` 张，不设置默认张数。
    - 调用 `image_gen` 前必须展示本次模式与张数、prompt 编号和完整提示词、变量覆盖摘要、输出目录。
@@ -122,11 +122,11 @@ archive/<项目名>/
    - 处理记录写入 `projects/<项目名>/revisions.md`。
 
 7. **最终打标修正**
-   - 只有当本项目计划图片全部出完，且用户确认全部满意后，才开启 `/prompts:lora-label` 或 `/lora-label`。
+   - 只有当本项目计划图片全部出完，且用户确认全部满意后，才开启 `@lora-base-image-prompts 清洗标签`。
    - 开启时必须先确认外部打标器已经在 `projects/<项目名>/images/` 内为每张训练图生成同名 `.txt` 标签文件。
-   - 一旦调用 `/lora-label`，必须读取 `projects/<项目名>/images/*.txt` 全部标签文件后再判断是否要改。
+   - 一旦进入清洗标签流程，必须读取 `projects/<项目名>/images/*.txt` 全部标签文件后再判断是否要改。
    - 读取 `references/core-methodology.md` 做二次修正；动作或表情用词需要统一时，再读取动作和表情参考。
-   - `/lora-label` 不调用视觉工具，不读取训练图片，不读取 `projects/<项目名>/prompts.md` 来推断画面。
+   - 清洗标签流程不调用视觉工具，不读取训练图片，不读取 `projects/<项目名>/prompts.md` 来推断画面。
    - 使用最小变量原则：标签非常干净时可以完全不改；需要修改时，只改具体 `.txt` 文件里最小必要片段，并说明改哪个文件、为什么改。
    - 如果用户提前明确 trigger，直接把 trigger 加到每个 `.txt` 最前面；如果没有明确 trigger，先完成其他安全清洗，最后再问是否添加 trigger。
 
