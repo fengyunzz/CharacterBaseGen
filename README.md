@@ -1,6 +1,6 @@
 # CharacterBaseGen
 
-CharacterBaseGen 是一个面向 Codex 的 LoRA 角色底图生成 Skill。它把角色三视图整理成一个可控工作流：初始化项目、生成中文自然语言出图清单、人工确认后调用 `image_gen`、清洗训练标签，并在完成后归档项目。
+CharacterBaseGen 是一个面向 Codex 的 LoRA 角色图片训练集生成 Skill。它把角色三视图整理成一个可控工作流：初始化项目、生成中文自然语言出图清单、人工确认后调用 `image_gen`、清洗训练标签，并在完成后归档项目。
 
 
 ## 适用场景
