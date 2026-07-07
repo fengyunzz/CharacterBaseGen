@@ -114,10 +114,3 @@ CharacterBaseGen
 
    Codex 确认后把整个项目文件夹移动到 `archive/demo-character/`。
 
-## 兼容性
-
-- 公开仓库的核心依赖只有 `SKILL.md`、frontmatter 和配套参考文档。
-- 只要对方把仓库放进自己的 Codex skills 目录，这个 Skill 就应能被发现。
-- 如果某人机器上没有你本地的 `/prompts:*` 注册项，也不影响 Skill 使用，因为公开版不依赖那套 wrapper。
-
-
