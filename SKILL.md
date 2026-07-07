@@ -14,7 +14,7 @@ description: Use when working from character three-view references to initialize
 - 不写僵硬 tag 堆，不写复杂负面约束，不追求长提示词。
 - 角色核心特征来自三视图固定参考，不要在每条提示词里反复描述细节；统一写“保持角色画风与特征一致”。
 - 三视图只作为角色身份和外观参考；每条提示词必须明确说明不使用参考图原有姿势、动作和表情。
-- `/lora-prompts` 必须先列出投喂给 `image_gen` 的原始参考图相对路径，且只能来自 `projects/<项目名>/refs/`。
+- 生成提示词清单阶段必须先列出投喂给 `image_gen` 的原始参考图相对路径，且只能来自 `projects/<项目名>/refs/`。
 - 初始化时三视图必须复制到该角色自己的 `projects/<项目名>/refs/`；`brief.md` 和 `prompts.md` 都必须记录这些项目内实际路径，不强制重命名原图。
 - 不要把 `projects/<项目名>/images/` 里的生成图当作参考图继续生图。
 - 默认画幅比例为 `1:1`，除非用户明确提出其他比例。
@@ -23,7 +23,7 @@ description: Use when working from character three-view references to initialize
 - 动作和表情必须从对应 tag 参考中适量选取，再转写成中文自然语言。
 - 每条清单都要有内部查重键：`view + shot + action_tag + expression_tag + background_type`。
 - 调用 `image_gen` 前，必须展示清单并获得用户明确同意。
-- `/lora-label` 是洗标签流程，必须读取 `projects/<项目名>/images/` 下所有 `.txt` 标签文件；不调用视觉工具，不读取 `prompts.md` 推断图片内容。
+- 清洗标签阶段必须读取 `projects/<项目名>/images/` 下所有 `.txt` 标签文件；不调用视觉工具，不读取 `prompts.md` 推断图片内容。
 - 需要打标修正方法论时，读取 `references/core-methodology.md`。
 
 ## 固定目录

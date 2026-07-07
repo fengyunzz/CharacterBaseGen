@@ -1,7 +1,7 @@
 interface:
   display_name: "LoRA 底图提示词"
   short_description: "三视图项目初始化、提示词清单、出图门禁、打标修正与归档"
-  default_prompt: "/prompts:lora-init <项目名>，接收我的角色三视图，按 projects/<项目名>/ 建项目包，自动分析角色信息；然后用 /prompts:lora-prompts 先询问数量并生成清单，用 /prompts:lora-generate 先询问单次或批量与 n 后再出图。"
+  default_prompt: "@lora-base-image-prompts 初始化项目 <项目名>，接收我的角色三视图，按 projects/<项目名>/ 建项目包，自动分析角色信息；然后生成提示词清单，先询问数量并生成清单；开始出图时先询问单次或批量与 n，确认后再出图。"
 
 policy:
   allow_implicit_invocation: true
