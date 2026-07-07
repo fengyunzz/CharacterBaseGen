@@ -15,6 +15,7 @@ description: Use when working from character three-view references to initialize
 - 角色核心特征来自三视图固定参考，不要在每条提示词里反复描述细节；统一写“保持角色画风与特征一致”。
 - 三视图只作为角色身份和外观参考；每条提示词必须明确说明不使用参考图原有姿势、动作和表情。
 - `/lora-prompts` 必须先列出投喂给 `image_gen` 的原始参考图相对路径，且只能来自 `projects/<项目名>/refs/`。
+- 初始化时三视图必须复制到该角色自己的 `projects/<项目名>/refs/`；`brief.md` 和 `prompts.md` 都必须记录这些项目内实际路径，不强制重命名原图。
 - 不要把 `projects/<项目名>/images/` 里的生成图当作参考图继续生图。
 - 默认画幅比例为 `1:1`，除非用户明确提出其他比例。
 - 生成清单时必须同时读取 `references/proportion.md`、`references/action-tag-llm.md`、`references/emotion-tag-llm.md`。
@@ -43,7 +44,7 @@ archive/<项目名>/
 ```
 
 - `projects/<项目名>/`：进行中的角色项目。
-- `refs/`：三视图、正面、侧面、背面和其他参考图。
+- `refs/`：三视图、正面、侧面、背面和其他参考图；这是当前项目包内部目录，即 `projects/<项目名>/refs/`。
 - `prompts.md`：出图提示词清单、数量确认、批次计划和确认记录。
 - `images/`：生成图、重生成图、接受图和废弃图记录。
 - `captions.jsonl`、`tags.csv`、`quality-check.csv`：全部图片满意后才生成或修正。
@@ -69,7 +70,7 @@ archive/<项目名>/
 1. **初始化项目**
    - 用户说 `@lora-base-image-prompts 初始化项目 <项目名>`，或发送三视图并表达创建 LoRA 底图项目时，使用本 Skill。
    - 建立或说明 `projects/<项目名>/` 项目包。
-   - 记录三视图位置到 `refs/`，需求记录到 `brief.md`。
+   - 复制三视图到 `projects/<项目名>/refs/`，记录这些项目内实际路径到 `brief.md`；默认保留原始文件名，重名时只追加最小后缀。
    - 不要要求用户填表。先从用户消息、文件名、三视图内容和上下文自动推断角色名、触发词、画风、必须保留、禁忌元素。
    - 只有关键信息无法判断且会影响后续出图时，才问最多一个简短问题。
 
@@ -85,6 +86,7 @@ archive/<项目名>/
 3. **生成提示词清单**
    - 用户说 `@lora-base-image-prompts 生成提示词清单`，或要求“出提示词清单”时，先确认训练集最终数量。
    - 写清单前，先列出将投喂给 `image_gen` 的原始参考图相对路径，路径必须位于 `projects/<项目名>/refs/`。
+   - 如果 `projects/<项目名>/refs/` 没有三视图，先回到初始化补齐；`prompts.md` 的“参考原图”必须逐条写入这些项目内路径。
    - 严禁使用 `projects/<项目名>/images/` 内的生成图作为参考图。
    - 如果用户没给数量，读取 `references/proportion.md` 后提出 50 张默认计划，但仍必须询问用户是否按 50 张，还是指定其他数量。
    - 用户指定其他数量时，按 `references/proportion.md` 的比例重新调整视角、景别、动作、表情、背景覆盖。
@@ -110,6 +112,7 @@ archive/<项目名>/
    - 单次：本次只出 1 张。
    - 批量：必须询问本批出 `n` 张，不设置默认张数。
    - 调用 `image_gen` 前必须展示本次模式与张数、prompt 编号和完整提示词、变量覆盖摘要、输出目录。
+   - 调用 `image_gen` 时必须附带 `projects/<项目名>/refs/` 中记录的三视图作为图片输入参考，不能只在文字提示词里提到三视图。
    - 必须等待用户明确同意，例如“同意出图”“开始生成”“按这个清单生成”。
    - 用户只说“继续优化”“看看”“可以吗”时，不视为同意出图。
    - `image_gen` 返回图片后，必须立刻保存或复制到 `projects/<项目名>/images/`。
@@ -146,6 +149,7 @@ archive/<项目名>/
 
 ## 参考原图
 - image_gen 参考路径：
+- 路径要求：逐条写入 `projects/<项目名>/refs/` 下的三视图实际路径
 - 禁止参考来源：`projects/<项目名>/images/`
 
 ## 计划数量

@@ -5,7 +5,7 @@
 ## 步骤
 
 1. 先确认训练集最终数量。用户未指定时，读取 `references/proportion.md` 后提出 50 张默认计划，但仍要等待确认。
-2. 列出将投喂给 `image_gen` 的原始参考图相对路径。路径只能来自 `projects/<项目名>/refs/`。
+2. 列出将投喂给 `image_gen` 的原始参考图相对路径。路径只能来自 `projects/<项目名>/refs/`；如果该目录没有三视图，先回到初始化补齐。
 3. 读取：
    - `references/proportion.md`
    - `references/action-tag-llm.md`
@@ -14,7 +14,7 @@
 5. 按确认数量生成清单，确保每条有真实差异。
 6. 为每条建立查重键：`view + shot + action_tag + expression_tag + background_type`。
 7. 自检近重复，列出风险并改写。
-8. 写入 `projects/<项目名>/prompts.md`。
+8. 写入 `projects/<项目名>/prompts.md`，并在“参考原图”中逐条记录 `projects/<项目名>/refs/` 下的三视图实际路径。
 
 ## 提示词结构
 

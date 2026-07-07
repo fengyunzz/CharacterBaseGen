@@ -48,7 +48,7 @@ CharacterBaseGen
    └─ .gitkeep
 ```
 
-真实项目应由使用者在本地创建到 `projects/<项目名>/`。请不要把真实项目素材提交到 GitHub。
+真实项目应由使用者在本地创建到 `projects/<项目名>/`。三视图原图放在该项目包内部的 `projects/<项目名>/refs/`，后续文档和 `image_gen` 都引用这里的实际路径；请不要把真实项目素材提交到 GitHub。
 
 ## 调用方式
 
@@ -78,7 +78,7 @@ CharacterBaseGen
    @lora-base-image-prompts 初始化项目 demo-character，接收我的角色三视图并创建项目包
    ```
 
-   Codex 建立 `projects/demo-character/`，记录参考图位置，并从三视图、文件名和上下文推断角色名、触发词、画风、必须保留和禁忌元素。
+   Codex 建立 `projects/demo-character/`，把三视图放入 `projects/demo-character/refs/`，记录项目内实际路径，并从三视图、文件名和上下文推断角色名、触发词、画风、必须保留和禁忌元素。
 
 2. 生成提示词清单
 
@@ -94,7 +94,7 @@ CharacterBaseGen
    @lora-base-image-prompts 开始出图
    ```
 
-   Codex 必须展示本次模式、张数、prompt 编号、完整提示词、变量覆盖和输出目录。只有用户明确说“同意出图”“开始生成”或“按这个清单生成”，才可调用 `image_gen`。
+   Codex 必须展示本次模式、张数、prompt 编号、完整提示词、变量覆盖、三视图参考输入和输出目录。只有用户明确说“同意出图”“开始生成”或“按这个清单生成”，才可调用 `image_gen`；调用时必须附带 `projects/<项目名>/refs/` 下的三视图图片。
 
 4. 清洗标签
 
